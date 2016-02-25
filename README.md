@@ -27,7 +27,11 @@ Views are given out of the box and of course you can replace them with your own,
 
 <a name="installation"></a>
 ## Installation
-Update `config/app.php` by registering the service provider of UserSys package.
+
+To install UserSys as a Composer package to be used with Laravel 5, simply run:
+`composer require qumonto/usersys`
+
+Next, update `config/app.php` by registering the service provider of UserSys package.
 
 ```php
 'providers' => [
@@ -78,7 +82,7 @@ All the routes required for user system are added out of the box and the list of
 
 <a name="events"></a>
 ## Events
-An event will be fired when new user is registered. The event class is named `UserRegistered` and extends `App\Events\Event`. 
+An event will be fired when new user is registered. The event class is named `UserRegistered` and extends `App\Events\Event`.
 
 To push the `UserRegistered` event class to the `app/Events` directory, use `events` tag.
 `php artisan vendor:publish --tag="events"`
@@ -92,7 +96,7 @@ To publish the listener to `app/Listeners` directory, use `listeners` tag with t
 
 <a name="migrations"></a>
 ## Migrations
-You don't really have to use the migrations provided by this package, you may skip publishing migrations by adding/modifying 4 simple attributes to your `users` table. 
+You don't really have to use the migrations provided by this package, you may skip publishing migrations by adding/modifying 4 simple attributes to your `users` table.
 
 Here are the added/modified attributes that UserSys package's `users` table migration provides by default:
 ```php
@@ -182,7 +186,7 @@ If you're using a different identifier, other than 'password', in your database 
 #### `login_view`
 You may specify the view you want to use for login form. It will be overiding the default view of the package. If you want to load the default views for login page then set the field to 'null'.
 
-If your login view is located inside `/resouces/views/auth/` and named `login.blade.php` then you may set the flag as follows: 
+If your login view is located inside `/resouces/views/auth/` and named `login.blade.php` then you may set the flag as follows:
 ```php
 'login_view'	=>	'auth.login',
 ```
@@ -196,7 +200,7 @@ If your registration page view is located at `/resources/views/auth/` and named 
 ```
 
 #### `email_verify_view`
-You may specify the view you might want to use for sending verification emails. The new value will overide the default view. If you want to load the default views for verification email then set the field to 'null'.  
+You may specify the view you might want to use for sending verification emails. The new value will overide the default view. If you want to load the default views for verification email then set the field to 'null'.
 
 > **NOTE** A `verification_token` variable will be injected to the email verification view which will contain the user's verification token.
 
@@ -224,7 +228,7 @@ Session::get(config('usersys.session_identifier'));
 <a name="copyright"></a>
 ## Copyright and License
 
-UserSys was written by Vijay Kumar and released under the MIT License. 
+UserSys was written by Vijay Kumar and released under the MIT License.
 See the [LICENSE](https://github.com/Qumonto/usersys/blob/master/LICENSE) file for details.
 
 Copyright 2015 Vijay Kumar
