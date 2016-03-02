@@ -229,6 +229,6 @@ Session::get(config('usersys.session_identifier'));
 ## Copyright and License
 
 UserSys was written by Vijay Kumar and released under the MIT License.
-See the [LICENSE](https://github.com/Qumonto/usersys/blob/master/LICENSE) file for details.
+See the [LICENSE](https://github.com/VijayKumarHackr/usersys/blob/master/LICENSE) file for details.
 
 Copyright 2015 Vijay Kumar
