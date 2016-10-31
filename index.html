@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Usersys by VijayKumarHackr</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Usersys</h1>
+        <h2>Configurable Laravel User System</h2>
+        <a href="https://github.com/VijayKumarHackr/usersys" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="usersys" class="anchor" href="#usersys" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UserSys</h1>
+
+<p>Configurable user management system for Laravel 5.</p>
+
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#user-model">Updating <code>User</code> Eloquent Models</a></li>
+<li><a href="#routes">Routes</a></li>
+<li><a href="#requests">Requests</a></li>
+<li><a href="#events">Events</a></li>
+<li><a href="#listeners">Listeners</a></li>
+<li><a href="#migrations">Migrations</a></li>
+<li><a href="#assets">Assets</a></li>
+<li><a href="#translations">Translations</a></li>
+<li><a href="#views">Views</a></li>
+<li><a href="#config">Configuration</a></li>
+<li><a href="#copyright">Copyright and License</a></li>
+</ul>
+
+<blockquote>
+<p><strong>NOTE</strong> The package is built keeping Laravel 5 in mind and has not been tested for Laravel 4 or below.</p>
+</blockquote>
+
+<p><a name="introduction"></a></p>
+
+<h2>
+<a id="introduction-why-use-usersys" class="anchor" href="#introduction-why-use-usersys" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction: Why use UserSys?</h2>
+
+<p>Laravel comes with a user system out of the box but it is not so much configurable as one might expect. UserSys is the package for Laravel 5 developers who want to get a proper hold over the user system mechanism.</p>
+
+<p>You can configure or customize, major features of the user system just my making minor edits or by setting appropriate values to the flags in the configuration file.</p>
+
+<p>Views are given out of the box and of course you can replace them with your own, just by defining them in the config file.</p>
+
+<p><a name="installation"></a></p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>To install UserSys as a Composer package to be used with Laravel 5, simply run:
+<code>composer require qumonto/usersys</code></p>
+
+<p>Next, update <code>config/app.php</code> by registering the service provider of UserSys package.</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-s"><span class="pl-pds">'</span>providers<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span> [</span>
+<span class="pl-s1">    <span class="pl-c">// ...</span></span>
+<span class="pl-s1">    <span class="pl-c1">Qumonto\UserSys\</span><span class="pl-c1">UserSysServiceProvider</span><span class="pl-k">::</span><span class="pl-c1">class</span>,</span>
+<span class="pl-s1">];</span></pre></div>
+
+<p>From the command line, run <code>php artisan vendor:publish</code> to publish the default configurations, views, migrations, translations, events, listeners, assets and requests. If don't want to publish all the files then you may follow the command with appropriate tags.</p>
+
+<p>Example: <code>php artisan vendor:publish -tag="config"</code> can be used to publish only configuration file.</p>
+
+<blockquote>
+<p><strong>NOTE</strong> For details about the tags for each category of files visit the corresponding section in the README.md</p>
+</blockquote>
+
+<p><a name="user-model"></a></p>
+
+<h2>
+<a id="updating-user-eloquent-model" class="anchor" href="#updating-user-eloquent-model" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Updating <code>User</code> Eloquent Model</h2>
+
+<p>The <code>User</code> model's <code>fillable</code> array must be updated with a value <code>verification_token</code> to avoid mass assignment exception while registering a new user record into the database.</p>
+
+<p><a name="routes"></a></p>
+
+<h2>
+<a id="routes" class="anchor" href="#routes" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Routes</h2>
+
+<p>All the routes required for user system are added out of the box and the list of those routes are given below:</p>
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>URI</th>
+<th>Action</th>
+<th>Middleware</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST</td>
+<td>login</td>
+<td>Qumonto\UserSys\Http\Controllers\AuthController@postLogin</td>
+<td>guest</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>login</td>
+<td>Qumonto\UserSys\Http\Controllers\AuthController@getLogin</td>
+<td>guest</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>logout</td>
+<td>Qumonto\UserSys\Http\Controllers\AuthController@getLogout</td>
+<td></td>
+</tr>
+<tr>
+<td>POST</td>
+<td>register</td>
+<td>Qumonto\UserSys\Http\Controllers\AuthController@postRegister</td>
+<td>guest</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>register</td>
+<td>Qumonto\UserSys\Http\Controllers\AuthController@getRegister</td>
+<td>guest</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>reset</td>
+<td>App\Http\Controllers\Auth\PasswordController@postReset</td>
+<td>guest</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>reset/email</td>
+<td>App\Http\Controllers\Auth\PasswordController@postEmail</td>
+<td>guest</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>reset/email</td>
+<td>App\Http\Controllers\Auth\PasswordController@getEmail</td>
+<td>guest</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>reset/{token}</td>
+<td>App\Http\Controllers\Auth\PasswordController@getReset</td>
+<td>guest</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>verify/{verify_token}</td>
+<td>Qumonto\UserSys\Http\Controllers\AuthController@getVerify</td>
+<td>guest</td>
+</tr>
+</tbody>
+</table>
+
+<blockquote>
+<p><strong>NOTE</strong> You cannot overide the routes, but in futher releases routing will be made flexible.</p>
+</blockquote>
+
+<p><a name="requests"></a></p>
+
+<h2>
+<a id="requests" class="anchor" href="#requests" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requests</h2>
+
+<ul>
+<li><p><code>UserLoginRequest</code> validates the login requests by the users. By default, the rules are defined in the <code>rules()</code> method of the <code>UserLoginRequest</code> class which says, an email/username is required and must be less than '255' characters. And the password is also required and must be at least '5' characters long.</p></li>
+<li>
+<p><code>UserRegisterRequest</code> validates the registration requests by the user. By default, the username/email field is marked required with less than '255' characters and should be a unique value. The password must be atleast '5' characters and should be confirmed.</p>
+
+<p>Adding a <code>requests</code> tag to vendor:publish will publish the requests classes.
+<code>php artisan vendor:publish --tag="requests"</code></p>
+
+<blockquote>
+<p><strong>NOTE</strong> You may modify the rules according to the needs of your project. Request files are located in <code>app/Http/Requests/</code> directory.</p>
+</blockquote>
+</li>
+</ul>
+
+<p><a name="events"></a></p>
+
+<h2>
+<a id="events" class="anchor" href="#events" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Events</h2>
+
+<p>An event will be fired when new user is registered. The event class is named <code>UserRegistered</code> and extends <code>App\Events\Event</code>.</p>
+
+<p>To push the <code>UserRegistered</code> event class to the <code>app/Events</code> directory, use <code>events</code> tag.
+<code>php artisan vendor:publish --tag="events"</code></p>
+
+<p><a name="listeners"></a></p>
+
+<h2>
+<a id="listeners" class="anchor" href="#listeners" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Listeners</h2>
+
+<p>We have included a listener class <code>AccountVerificationEmail</code> which sends an account verification email to the registered users if the <code>email_verification</code> flag is set to <code>true</code> in <code>config/usersys.php</code> file.</p>
+
+<p>To publish the listener to <code>app/Listeners</code> directory, use <code>listeners</code> tag with the vendor:publish command.
+<code>php artisan vendor:publish --tag="listeners"</code></p>
+
+<p><a name="migrations"></a></p>
+
+<h2>
+<a id="migrations" class="anchor" href="#migrations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Migrations</h2>
+
+<p>You don't really have to use the migrations provided by this package, you may skip publishing migrations by adding/modifying 4 simple attributes to your <code>users</code> table.</p>
+
+<p>Here are the added/modified attributes that UserSys package's <code>users</code> table migration provides by default:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-smi">$table</span><span class="pl-k">-&gt;</span>string(config(<span class="pl-s"><span class="pl-pds">'</span>usersys.username_column_and_field<span class="pl-pds">'</span></span>))<span class="pl-k">-&gt;</span>unique();</span>
+<span class="pl-s1"><span class="pl-smi">$table</span><span class="pl-k">-&gt;</span>string(config(<span class="pl-s"><span class="pl-pds">'</span>usersys.password_column_and_field<span class="pl-pds">'</span></span>), <span class="pl-c1">60</span>);</span>
+<span class="pl-s1"><span class="pl-smi">$table</span><span class="pl-k">-&gt;</span>string(<span class="pl-s"><span class="pl-pds">'</span>verification_token<span class="pl-pds">'</span></span>, <span class="pl-c1">50</span>)<span class="pl-k">-&gt;</span>nullable();</span>
+<span class="pl-s1"><span class="pl-smi">$table</span><span class="pl-k">-&gt;</span>rememberToken();</span></pre></div>
+
+<p><code>$table-&gt;string(config('usersys.username_column_and_field'))-&gt;unique();</code> will hold the email or username or any other field depending on how you've set <code>username_column_and_field</code> flag in your <code>config/usersys.php</code> file.</p>
+
+<p><code>$table-&gt;string(config('usersys.password_column_and_field'), 60);</code> will be used to hold the encrypted password. The name of the attribute used to store user's password, depends upon how you've configured <code>password_column_and_field</code> flag in <code>config/usersys.php</code> file.</p>
+
+<p><code>$table-&gt;string('verification_token', 50)-&gt;nullable();</code> will contain the email verification token that will be used in account verification process. Remember, the <code>verification_token</code> attribute must be at least 50 characters in length.</p>
+
+<p><code>$table-&gt;rememberToken();</code> will be used to store a token for "Remember me" sessions being maintained by your application. Hence you must verify that your <code>users</code> table contains the following column if you wish to provide "Remember me" functionality.</p>
+
+<p><a name="assets"></a></p>
+
+<h2>
+<a id="assets" class="anchor" href="#assets" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Assets</h2>
+
+<p>The assets include bootstrap css file with the name <code>app.css</code> which will be referenced in the views that are provided by default in UserSys package. The assets will be published to <code>/public/css/</code> directory.</p>
+
+<p>To publish the assets available with this package you may run <code>php artisan vendor:publish --tag="assets"</code>.</p>
+
+<p><a name="translations"></a></p>
+
+<h2>
+<a id="translations" class="anchor" href="#translations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Translations</h2>
+
+<p>Translations include language files which will be used to display messages to the user for a certain activity.
+For example, if can edit the <code>email_verification_subject</code> flag to change the subject of the verification email sent to the user.</p>
+
+<p>To publish the translations into <code>app/resources/lang/en</code> directory, you may run the following command:
+<code>php artisan vendor:publish --tag="translations"</code>.</p>
+
+<p><a name="views"></a></p>
+
+<h2>
+<a id="views" class="anchor" href="#views" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Views</h2>
+
+<p>Since, UserSys uses the default <code>PasswordController</code> class for password resets, views are handled differently.
+The views <code>password.blade.php</code> (forgot password view) and <code>reset.blade.php</code> (account reset view) will be pushed to <code>resources/views/auth/</code> directory by running <code>php artisan vendor:publish --tag="password-views"</code>.</p>
+
+<p>Other views such as <code>login.blade.php</code>, <code>register.blade.php</code> and <code>verify.blade.php</code> can be configured in the <code>config/usersys.php</code> file.</p>
+
+<p><a name="config"></a></p>
+
+<h2>
+<a id="configuration" class="anchor" href="#configuration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Configuration</h2>
+
+<table>
+<thead>
+<tr>
+<th>Configuration flags</th>
+<th>Defaults</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>app_name</code></td>
+<td>'UserSys'</td>
+<td><code>'app_name' =&gt; 'UserSys',</code></td>
+</tr>
+<tr>
+<td><code>redirect_after_fail</code></td>
+<td>'login'</td>
+<td><code>'redirect_after_fail' =&gt; '/',</code></td>
+</tr>
+<tr>
+<td><code>redirect_after_logout</code></td>
+<td>'login'</td>
+<td><code>'redirect_after_logout' =&gt; 'login',</code></td>
+</tr>
+<tr>
+<td><code>redirect_after_login</code></td>
+<td>'home'</td>
+<td><code>'redirect_after_login' =&gt; 'dashboard',</code></td>
+</tr>
+<tr>
+<td><code>redirect_after_verification</code></td>
+<td>'login'</td>
+<td><code>'redirect_after_verification'  =&gt;  'welcome',</code></td>
+</tr>
+<tr>
+<td><code>log_user_after_registration</code></td>
+<td><code>false</code></td>
+<td><code>'log_user_after_registration' =&gt; true,</code></td>
+</tr>
+<tr>
+<td><code>email_verification</code></td>
+<td><code>true</code></td>
+<td><code>'email_verification' =&gt; false,</code></td>
+</tr>
+<tr>
+<td><code>username_column_and_field</code></td>
+<td>'email'</td>
+<td><code>'username_column_and_field' =&gt; 'username',</code></td>
+</tr>
+<tr>
+<td><code>password_column_and_field</code></td>
+<td>'password'</td>
+<td><code>'password_column_and_field'    =&gt; 'passwd',</code></td>
+</tr>
+<tr>
+<td><code>login_view</code></td>
+<td><code>null</code></td>
+<td><code>'login_view'   =&gt;  'auth.login',</code></td>
+</tr>
+<tr>
+<td><code>register_view</code></td>
+<td><code>null</code></td>
+<td><code>'register_view'    =&gt;  'auth.register',</code></td>
+</tr>
+<tr>
+<td><code>email_verify_view</code></td>
+<td><code>null</code></td>
+<td><code>'email_verify_view'    =&gt;  'emails.verify',</code></td>
+</tr>
+<tr>
+<td><code>session_identifier</code></td>
+<td>'message'</td>
+<td><code>'session_identifier'   =&gt; 'flash-message',</code></td>
+</tr>
+</tbody>
+</table>
+
+<h4>
+<a id="app_name" class="anchor" href="#app_name" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>app_name</code>
+</h4>
+
+<p>Here, you may specify the name of your application and it will be visible in the navbar header in everypage.</p>
+
+<h4>
+<a id="redirect_after_fail" class="anchor" href="#redirect_after_fail" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>redirect_after_fail</code>
+</h4>
+
+<p>When a user attempts to login to the application and if the user fails to authenticate then the user will be redirected to the route set to this flag. Default is set to 'login' route but you are free to change that.</p>
+
+<h4>
+<a id="redirect_after_logout" class="anchor" href="#redirect_after_logout" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>redirect_after_logout</code>
+</h4>
+
+<p>When the user logs out of the application, the user will be redirected to the route set to this flag, after a successful logout. Default is set to 'login', can be set according to preference.</p>
+
+<h4>
+<a id="redirect_after_login" class="anchor" href="#redirect_after_login" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>redirect_after_login</code>
+</h4>
+
+<p>After a successful login into the application, the user will be redirected to the route set to this flag. The default is set to 'home' and can be changed according to the preference.</p>
+
+<h4>
+<a id="redirect_after_verification" class="anchor" href="#redirect_after_verification" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>redirect_after_verification</code>
+</h4>
+
+<p>Once the user completes email verification process, the user will be redirected to the route set to this flag. The default is set to 'login', but if you wish to omit the email verification feature then this field will not affect your application.</p>
+
+<h4>
+<a id="log_user_after_registration" class="anchor" href="#log_user_after_registration" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>log_user_after_registration</code>
+</h4>
+
+<p>By setting this flag (either <code>true</code> or <code>false</code>) you can decide whether or not to allow the user to login into their account. By default the value is set to false, hence the user requires to provide email/username and password to login after a successful registration. If the value is set to <code>true</code>, then after a successful registration, the user will be redirected to the path set to <code>redirect_after_login</code> key. Else, user will be redirected to the path set to <code>redirect_after_logout</code>.</p>
+
+<h4>
+<a id="email_verification" class="anchor" href="#email_verification" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>email_verification</code>
+</h4>
+
+<p>By setting this flag, either <code>true</code> or <code>false</code>, you can enable or disable the email verification feature.
+If the value is set to true, then after a successful registration, the user will have to verify the account by clicking a link sent via email. Otherwise, user will be able to login to the account without any email verification process.</p>
+
+<blockquote>
+<p><strong>NOTE</strong> Remember, the fillable array in the 'User' model must be updated with <code>verification_token</code> field.</p>
+</blockquote>
+
+<h4>
+<a id="username_column_and_field" class="anchor" href="#username_column_and_field" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>username_column_and_field</code>
+</h4>
+
+<p>The name field of login email at login form and the corresponding database column must be the same. Therefore, if you are using 'email_id' as the name for email field in login form, then you must also use 'email_id' as the name for the corresponding database column. Setting this flag will make sure that once it's specified the name can be accessed at both the scenarios.</p>
+
+<h4>
+<a id="password_column_and_field" class="anchor" href="#password_column_and_field" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>password_column_and_field</code>
+</h4>
+
+<p>If you're using a different identifier, other than 'password', in your database to store user's password then you may specify it here and the rest will be taken care. Futher, if you are replacing the default views then make sure you name the password field in the HTML page accordingly.</p>
+
+<h4>
+<a id="login_view" class="anchor" href="#login_view" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>login_view</code>
+</h4>
+
+<p>You may specify the view you want to use for login form. It will be overiding the default view of the package. If you want to load the default views for login page then set the field to 'null'.</p>
+
+<p>If your login view is located inside <code>/resouces/views/auth/</code> and named <code>login.blade.php</code> then you may set the flag as follows:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-s"><span class="pl-pds">'</span>login_view<span class="pl-pds">'</span></span>    <span class="pl-k">=&gt;</span>  <span class="pl-s"><span class="pl-pds">'</span>auth.login<span class="pl-pds">'</span></span>,</span></pre></div>
+
+<h4>
+<a id="register_view" class="anchor" href="#register_view" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>register_view</code>
+</h4>
+
+<p>Here, you may specify the view you want to show for register form. It will be overiding the default view of the package. If you want to load the default views for register page then set the field to 'null'.</p>
+
+<p>If your registration page view is located at <code>/resources/views/auth/</code> and named to be <code>register.blade.php</code> then you can set the flag as follows:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-s"><span class="pl-pds">'</span>register_view<span class="pl-pds">'</span></span> <span class="pl-k">=&gt;</span>  <span class="pl-s"><span class="pl-pds">'</span>auth.register<span class="pl-pds">'</span></span>,</span></pre></div>
+
+<h4>
+<a id="email_verify_view" class="anchor" href="#email_verify_view" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>email_verify_view</code>
+</h4>
+
+<p>You may specify the view you might want to use for sending verification emails. The new value will overide the default view. If you want to load the default views for verification email then set the field to 'null'.</p>
+
+<blockquote>
+<p><strong>NOTE</strong> A <code>verification_token</code> variable will be injected to the email verification view which will contain the user's verification token.</p>
+</blockquote>
+
+<h4>
+<a id="session_identifier" class="anchor" href="#session_identifier" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>session_identifier</code>
+</h4>
+
+<p>The session identifier will be helpful to retrieve the session's flash messages. Hence you may specify the session identifier according to your choice and may reference to it in the views.</p>
+
+<h6>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example:</h6>
+
+<p>Setting the session identifier:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-s"><span class="pl-pds">'</span>session_identifier<span class="pl-pds">'</span></span>    <span class="pl-k">=&gt;</span> <span class="pl-s"><span class="pl-pds">'</span>flash-message<span class="pl-pds">'</span></span>,</span></pre></div>
+
+<p>Flashing the data to the view:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1">session()<span class="pl-k">-&gt;</span>flash(config(<span class="pl-s"><span class="pl-pds">'</span>usersys.session_identifier<span class="pl-pds">'</span></span>), <span class="pl-s"><span class="pl-pds">'</span>Your flashed message!<span class="pl-pds">'</span></span>);</span></pre></div>
+
+<p>Retrieving the flashed message in the view:</p>
+
+<div class="highlight highlight-text-html-php"><pre><span class="pl-s1"><span class="pl-c1">Session</span><span class="pl-k">::</span>get(config(<span class="pl-s"><span class="pl-pds">'</span>usersys.session_identifier<span class="pl-pds">'</span></span>));</span></pre></div>
+
+<blockquote>
+<p><strong>NOTE</strong> The function <code>config('usersys.session_identifier')</code> will return the value set to the <code>session_identifier</code> flag.</p>
+</blockquote>
+
+<p><a name="copyright"></a></p>
+
+<h2>
+<a id="copyright-and-license" class="anchor" href="#copyright-and-license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Copyright and License</h2>
+
+<p>UserSys was written by Vijay Kumar and released under the MIT License.
+See the <a href="https://github.com/VijayKumarHackr/usersys/blob/master/LICENSE">LICENSE</a> file for details.</p>
+
+<p>Copyright 2015 Vijay Kumar</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/VijayKumarHackr/usersys/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/VijayKumarHackr/usersys/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/VijayKumarHackr/usersys"></a> is maintained by <a href="https://github.com/VijayKumarHackr">VijayKumarHackr</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
